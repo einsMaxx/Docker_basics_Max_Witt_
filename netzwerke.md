@@ -118,23 +118,33 @@ Von außen wird der Host-Port verwendet, zum Beispiel `http://localhost:8080`. F
 
 ## Praktischer Test
 
-Der praktische Test muss auf dem lokalen PC durchgeführt werden.
-
-Folgende Befehle werden dafür verwendet:
+Die Compose-Datei wurde zuerst mit folgendem Befehl geprüft:
 
 ```bash
 docker compose -f compose.yml config
+```
+
+Danach wurden alle Services gemeinsam gestartet:
+
+```bash
 docker compose -f compose.yml up -d
 docker compose -f compose.yml ps
 docker ps
 docker network inspect lab_net
 docker compose -f compose.yml exec nginx getent hosts pihole
-docker compose -f compose.yml down
 ```
 
-Ergebnis nach dem Test eintragen:
+Ergebnis:
 
-- Alle vier Container konnten gestartet werden: ...
-- Alle vier Container waren mit `lab_net` verbunden: ...
-- Portkonflikte oder Fehler: ...
-- Durchgeführte Änderungen zur Fehlerbehebung: ...
+- Alle vier Container konnten gestartet werden.
+- Pi-hole, Portainer, Watchtower und Nginx waren mit `lab_net` verbunden.
+- `lab_net` wurde mit dem Treiber `bridge` erstellt.
+- Nginx konnte den Servicenamen `pihole` auflösen.
+- Es gab keine Portkonflikte.
+- Watchtower benötigte für die aktuelle Docker-Version die Einstellung `DOCKER_API_VERSION: "1.40"`. Danach lief der Container fehlerfrei.
+
+Zum Beenden wird folgender Befehl verwendet:
+
+```bash
+docker compose -f compose.yml down
+```
