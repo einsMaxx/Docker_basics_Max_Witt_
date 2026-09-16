@@ -10,7 +10,6 @@ services:
       - "80:80/tcp"
     environment:
       TZ: "Europe/Berlin"
-      FTLCONF_webserver_api_password: "docker123"
       FTLCONF_dns_listeningMode: "ALL"
     volumes:
       - "./etc-pihole:/etc/pihole"
