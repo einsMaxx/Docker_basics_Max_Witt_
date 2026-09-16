@@ -1,18 +1,18 @@
 # Docker Grundlagen
 
-In diesem Repository sind verschiedene Docker Container.
+In diesem Repository sind vier Docker-Compose-Dateien für Pi-hole, Portainer, Watchtower und Nginx.
 
-Ich habe Docker Desktop installiert und die Container mit Docker Compose gestartet.
+Die Grundlagen stammen aus dem [c’t-3003-Video](https://www.youtube.com/watch?v=LBG51Gygg7A) und dem [zugehörigen GitHub-Gist](https://gist.github.com/jamct/2e6c03f60319423bc4bc6c23fc0aa359).
 
 ## Wichtige Befehle
 
-Mit diesem Befehl kann man sehen, welche Container gerade laufen:
+- Laufende Container anzeigen:
 
 ```bash
 docker ps
 ```
 
-Mit diesem Befehl kann man alle Container sehen, auch die gestoppten:
+- Alle Container anzeigen:
 
 ```bash
 docker ps -a
@@ -20,7 +20,11 @@ docker ps -a
 
 ## Pi-hole
 
-Pi-hole ist ein DNS-Server. Er kann Werbung und unerwünschte Webseiten im Netzwerk blockieren.
+Pi-hole ist ein DNS-Server. Er kann Werbung und unerwünschte Domains im Netzwerk blockieren.
+
+- Image: `pihole/pihole:latest`
+- Ports: 53 für DNS und 80 für die Weboberfläche
+- Webseite: [http://localhost/admin](http://localhost/admin)
 
 Starten:
 
@@ -28,15 +32,21 @@ Starten:
 docker compose -f pihole/pihole.yml up -d
 ```
 
-Die Webseite von Pi-hole ist erreichbar über:
+Beenden:
 
-```text
-http://localhost/admin
+```bash
+docker compose -f pihole/pihole.yml down
 ```
+
+Beobachtung: Pi-hole wurde gestartet und mit `docker ps` kontrolliert. Die Weboberfläche war unter `http://localhost/admin` erreichbar.
 
 ## Portainer
 
-Portainer ist eine Weboberfläche für Docker. Dort kann man Container sehen, starten und stoppen.
+Portainer ist eine Weboberfläche zum Verwalten von Docker-Containern.
+
+- Image: `portainer/portainer-ce:latest`
+- Port: 9000
+- Webseite: [http://localhost:9000](http://localhost:9000)
 
 Starten:
 
@@ -44,15 +54,21 @@ Starten:
 docker compose -f portainer/portainer.yml up -d
 ```
 
-Die Webseite von Portainer ist erreichbar über:
+Beenden:
 
-```text
-http://localhost:9000
+```bash
+docker compose -f portainer/portainer.yml down
 ```
+
+Beobachtung: Portainer wurde gestartet und über die Weboberfläche ein Administratorkonto eingerichtet.
 
 ## Watchtower
 
-Watchtower sucht nach Updates für Docker Container. Wenn es ein Update gibt, kann Watchtower den Container automatisch aktualisieren.
+Watchtower prüft Docker-Container auf neue Images und kann sie automatisch aktualisieren.
+
+- Image: `containrrr/watchtower:latest`
+- Keine Weboberfläche vorhanden
+- Kontrolle über `docker ps` und `docker logs watchtower`
 
 Starten:
 
@@ -60,15 +76,21 @@ Starten:
 docker compose -f watchtower/watchtower.yml up -d
 ```
 
-Watchtower hat keine eigene Webseite. Den Status kann man mit Docker Desktop oder mit diesem Befehl sehen:
+Beenden:
 
 ```bash
-docker logs watchtower
+docker compose -f watchtower/watchtower.yml down
 ```
+
+Beobachtung: Der Container wurde gestartet. Die Logausgabe zeigte auf dem aktuellen Docker Desktop einen Fehler wegen einer zu alten Docker-API der Watchtower-Version aus dem Video.
 
 ## Nginx
 
 Nginx ist ein Webserver. Er zeigt eine einfache Webseite an.
+
+- Image: `nginx:latest`
+- Port: 8080 auf dem PC wird auf Port 80 im Container weitergeleitet
+- Webseite: [http://localhost:8080](http://localhost:8080)
 
 Starten:
 
@@ -76,12 +98,14 @@ Starten:
 docker compose -f nginx/nginx.yml up -d
 ```
 
-Die Webseite von Nginx ist erreichbar über:
+Beenden:
 
-```text
-http://localhost:8080
+```bash
+docker compose -f nginx/nginx.yml down
 ```
+
+Beobachtung: Der Test erfolgt nach dem Start von Nginx. Wenn die Standardseite angezeigt wird, läuft der Webserver.
 
 ## Docker Desktop
 
-In Docker Desktop kann man alle Container sehen. Dort kann man die Container auch starten und stoppen.
+Die Container wurden auch in Docker Desktop angezeigt. Dort können sie gestartet und gestoppt werden. Den Status kann man danach mit `docker ps` oder `docker ps -a` kontrollieren.
