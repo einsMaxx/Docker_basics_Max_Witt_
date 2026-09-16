@@ -104,7 +104,7 @@ Beenden:
 docker compose -f nginx/nginx.yml down
 ```
 
-Beobachtung: Der Test erfolgt nach dem Start von Nginx. Wenn die Standardseite angezeigt wird, läuft der Webserver.
+Beobachtung: Nginx wurde gestartet. Die Standardseite war unter `http://localhost:8080` erreichbar. Der Container wurde außerdem in Docker Desktop gestoppt und wieder gestartet.
 
 ## Docker Desktop
 
